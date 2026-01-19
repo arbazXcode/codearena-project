@@ -45,44 +45,49 @@ export const onBoardUser = async () => {
   }
 };
 
-
 export const currentUserRole = async () => {
   try {
     const user = await currentUser();
 
     if (!user) {
-      return { success: false, error: "No authenticated user found" };
+      return null;
     }
 
     const { id } = user;
 
     const userRole = await db.user.findUnique({
       where: {
-        clerkId: id
+        clerkId: id,
       },
       select: {
-        role: true
-      }
-    })
-    return userRole.role;
+        role: true,
+      },
+    });
+
+    return userRole?.role ?? null;
   } catch (error) {
-    console.error("Error fetching user role:", error);
-    return { success: false, error: "Failed to fetch user role" };
+    console.warn("User table not ready yet:", error.message);
+    return null;
   }
-}
+};
 
 export const getCurrentUser = async () => {
-  const user = await currentUser()
+  try {
+    const user = await currentUser();
+    if (!user) return null;
 
-  const dbUser = await db.user.findUnique({
-    where: {
-      clerkId: user.id
-    },
-    select: {
-      id: true
-    }
-  })
+    const dbUser = await db.user.findUnique({
+      where: {
+        clerkId: user.id,
+      },
+      select: {
+        id: true,
+      },
+    });
 
-
-  return dbUser;
-}
+    return dbUser;
+  } catch (error) {
+    console.warn("User table not ready yet:", error.message);
+    return null;
+  }
+};
