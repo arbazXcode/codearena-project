@@ -6,18 +6,13 @@ import {
   ChevronRight,
   Play,
   Star,
-  Moon,
-  Sun,
-  Menu,
+  Cpu,
+  Globe,
+  TrendingUp,
+  Terminal,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { onBoardUser } from "@/modules/auth/actions";
 
@@ -26,131 +21,152 @@ export default async function Home() {
 
   const features = [
     {
-      icon: <Code2 className="w-6 h-6" />,
+      icon: <Code2 className="w-6 h-6 text-amber-500" />,
       title: "Interactive Coding",
       description:
-        "Practice with real-world coding challenges and get instant feedback on your solutions.",
+        "Practice with real-world coding challenges and get instant feedback in our isolated sandboxes.",
     },
     {
-      icon: <Trophy className="w-6 h-6" />,
+      icon: <Trophy className="w-6 h-6 text-amber-500" />,
       title: "Track Progress",
       description:
-        "Monitor your improvement with detailed analytics and achievement systems.",
+        "Monitor your improvement with detailed analytics, heatmaps, and achievement systems.",
     },
     {
-      icon: <Users className="w-6 h-6" />,
+      icon: <Users className="w-6 h-6 text-amber-500" />,
       title: "Global Community",
       description:
-        "Learn from thousands of developers worldwide and share your knowledge.",
+        "Learn from thousands of developers worldwide, share solutions, and discuss optimizations.",
     },
     {
-      icon: <Zap className="w-6 h-6" />,
+      icon: <Zap className="w-6 h-6 text-amber-500" />,
       title: "Real-time Feedback",
       description:
-        "Get instant feedback on your solutions with detailed explanations.",
+        "Get instant verdicts on your solutions with test-case-level feedback and performance metrics.",
     },
   ];
 
   const stats = [
-    { number: "50K+", label: "Problems Solved" },
-    { number: "10K+", label: "Active Developers" },
-    { number: "25+", label: "Programming Languages" },
-    { number: "98%", label: "Success Rate" },
+    { number: "50K+", label: "Problems Solved", icon: Terminal },
+    { number: "10K+", label: "Active Developers", icon: Users },
+    { number: "25+", label: "Languages Supported", icon: Globe },
+    { number: "99.9%", label: "Uptime", icon: Cpu },
   ];
 
   const problemCategories = [
     {
       level: "Beginner",
       title: "Easy Problems",
-      description:
-        "Perfect for getting started with basic programming concepts and syntax.",
+      description: "Perfect for mastering syntax and basic logic.",
       count: "500+ Problems",
-      color: "amber",
+      color: "text-emerald-500",
+      bg: "bg-emerald-500/10",
+      border: "border-emerald-500/20",
     },
     {
       level: "Intermediate",
       title: "Medium Problems",
-      description:
-        "Challenge yourself with data structures and algorithm problems.",
+      description: "Challenge yourself with essential data structures.",
       count: "800+ Problems",
-      color: "indigo",
+      color: "text-amber-500",
+      bg: "bg-amber-500/10",
+      border: "border-amber-500/20",
     },
     {
       level: "Advanced",
       title: "Hard Problems",
-      description:
-        "Master complex algorithms and compete in programming contests.",
+      description: "Complex algorithms for competitive programming.",
       count: "300+ Problems",
-      color: "amber",
+      color: "text-rose-500",
+      bg: "bg-rose-500/10",
+      border: "border-rose-500/20",
     },
   ];
 
   return (
-    <div className="min-h-screen  transition-colors mt-24">
-      {/* Hero Section */}
-      <section className="min-h-screen flex flex-col justify-center items-center px-4 pt-16">
+    <div className="min-h-screen bg-neutral-950 text-neutral-200 selection:bg-amber-500/30 selection:text-amber-200 overflow-x-hidden">
+      {/* Background Effects */}
+      <div className="fixed inset-0 z-0 h-full w-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+      <div className="fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_top,rgba(251,191,36,0.15),transparent_50%)] pointer-events-none"></div>
+
+      {/* --- Hero Section --- */}
+      <section className="relative z-10 pt-40 pb-32 px-6">
         <div className="max-w-6xl mx-auto text-center">
           {/* Badge */}
-          <Badge
-            variant="secondary"
-            className="mb-8 bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900"
-          >
-            <Star className="w-4 h-4 mr-2" />
-            Join 10,000+ developers already coding
-          </Badge>
-
-          {/* Main Heading */}
-          <h1 className="text-2xl md:text-5xl lg:text-6xl font-black text-gray-900 dark:text-white leading-tight mb-8">
-            Master{" "}
-            <span className="relative inline-block">
-              <span className="px-6 py-3 bg-amber-500 dark:bg-amber-400 text-white dark:text-gray-900 rounded-2xl transform -rotate-1 inline-block shadow-lg">
-                Problem
-              </span>
-            </span>{" "}
-            Solving
-            <br />
-            with{" "}
-            <span className="relative inline-block">
-              <span className="px-6 py-3 bg-indigo-600 dark:bg-indigo-500 text-white rounded-2xl transform rotate-1 inline-block shadow-lg">
-                Code
-              </span>
-            </span>
-          </h1>
-
-          {/* Subheading */}
-          <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-12 leading-relaxed">
-            Challenge yourself with thousands of coding problems, compete with
-            developers worldwide, and accelerate your programming journey with
-            real-time feedback and expert solutions.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-            <Button
-              size="lg"
-              className="bg-amber-500 hover:bg-amber-600 dark:bg-amber-400 dark:hover:bg-amber-500 text-white dark:text-gray-900 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
-            >
-              <Play className="w-5 h-5 mr-2" />
-              Start Coding Now
-              <ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="border-2 border-indigo-300 dark:border-indigo-600 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-950"
-            >
-              Browse Problems
-            </Button>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-mono mb-8 uppercase tracking-widest shadow-[0_0_10px_-4px_rgba(245,158,11,0.5)]">
+            <Star className="w-3 h-3" />
+            <span>Join 10,000+ Developers</span>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+          {/* Main Heading */}
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-8 leading-tight">
+            Master{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-600">
+              Algorithms.
+            </span>
+            <br />
+            Build{" "}
+            <span className="relative z-10">
+              Careers
+              <svg
+                className="absolute w-full h-3 -bottom-1 left-0 text-amber-500 opacity-60 -z-10"
+                viewBox="0 0 100 10"
+                preserveAspectRatio="none"
+              >
+                <path
+                  d="M0 5 Q 50 10 100 5"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  fill="none"
+                />
+              </svg>
+            </span>
+            .
+          </h1>
+
+          <p className="text-xl md:text-2xl text-neutral-400 max-w-2xl mx-auto mb-12 leading-relaxed">
+            The modern platform for data structures and algorithms. Real-time
+            execution, interview patterns, and a community that ships code.
+          </p>
+
+          {/* Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20">
+            <Link href="/problems">
+              <Button
+                size="lg"
+                className="h-14 px-8 text-lg font-semibold bg-amber-500 hover:bg-amber-400 text-neutral-950 rounded-xl shadow-[0_0_20px_-5px_rgba(245,158,11,0.4)] transition-all hover:scale-105 active:scale-95"
+              >
+                <Play className="w-5 h-5 mr-2 fill-current" />
+                Start Coding
+              </Button>
+            </Link>
+
+            <Link href="/problems">
+              <Button
+                variant="outline"
+                size="lg"
+                className="h-14 px-8 text-lg bg-transparent border-neutral-700 hover:bg-neutral-800 text-white rounded-xl transition-all"
+              >
+                Explore Problems
+                <ChevronRight className="w-5 h-5 ml-2" />
+              </Button>
+            </Link>
+          </div>
+
+          {/* Stats Glass Strip */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto p-4 rounded-2xl bg-neutral-900/50 border border-neutral-800 backdrop-blur-sm">
             {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+              <div
+                key={index}
+                className="text-center p-4 hover:bg-white/5 rounded-xl transition-colors"
+              >
+                <div className="flex justify-center mb-2 text-neutral-500">
+                  <stat.icon size={20} />
+                </div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1">
                   {stat.number}
                 </div>
-                <div className="text-gray-600 dark:text-gray-400 font-medium">
+                <div className="text-xs font-mono uppercase tracking-wider text-neutral-500">
                   {stat.label}
                 </div>
               </div>
@@ -159,134 +175,118 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section
-        id="features"
-        className="py-24 bg-gray-50 dark:bg-neutral-900/50"
-      >
-        <div className="max-w-6xl mx-auto px-4">
+      {/* --- Features Grid --- */}
+      <section className="relative z-10 py-24 px-6">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Everything you need to{" "}
-              <span className="text-amber-600 dark:text-amber-400">excel</span>
+              <span className="text-amber-500">Excel</span>
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Our platform provides comprehensive tools and resources to help
-              you become a better programmer
+            <p className="text-neutral-400 max-w-2xl mx-auto">
+              We stripped away the clutter. No ads, no distractions. Just a
+              pure, high-performance environment for mastering code.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => (
-              <Card
+              <div
                 key={index}
-                className="hover:shadow-lg transition-shadow duration-200 border-gray-200 dark:border-gray-700"
+                className="group p-8 rounded-3xl border border-neutral-800 bg-neutral-900/40 hover:bg-neutral-900/80 hover:border-amber-500/30 transition-all duration-300"
               >
-                <CardHeader>
-                  <div
-                    className={`w-12 h-12 ${
-                      index % 2 === 0
-                        ? "bg-amber-100 dark:bg-amber-900"
-                        : "bg-indigo-100 dark:bg-indigo-900"
-                    } rounded-xl flex items-center justify-center ${
-                      index % 2 === 0
-                        ? "text-amber-600 dark:text-amber-400"
-                        : "text-indigo-600 dark:text-indigo-400"
-                    } mb-4`}
-                  >
-                    {feature.icon}
-                  </div>
-                  <CardTitle className="text-gray-900 dark:text-white">
-                    {feature.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-gray-600 dark:text-gray-300">
-                    {feature.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
+                <div className="w-12 h-12 rounded-lg bg-amber-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">
+                  {feature.title}
+                </h3>
+                <p className="text-neutral-400 leading-relaxed text-sm">
+                  {feature.description}
+                </p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Problem Categories */}
-      <section id="problems" className="py-24">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-              Choose your{" "}
-              <span className="text-indigo-600 dark:text-indigo-400">
-                challenge
-              </span>
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              From beginner-friendly puzzles to advanced algorithmic challenges
-            </p>
+      {/* --- Problem Categories --- */}
+      <section className="relative z-10 py-24 px-6 bg-neutral-900/20 border-y border-neutral-800">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Choose your Challenge
+              </h2>
+              <p className="text-neutral-400">
+                Curated paths for every skill level.
+              </p>
+            </div>
+            <a
+              href="/problems"
+              className="hidden md:flex items-center gap-2 text-amber-500 hover:text-amber-400 font-medium transition-colors"
+            >
+              View all problems <ChevronRight size={16} />
+            </a>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {problemCategories.map((category, index) => (
-              <Card
+              <div
                 key={index}
-                className={`border-2 hover:shadow-lg transition-all duration-200 ${
-                  category.color === "amber"
-                    ? "bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800 hover:border-amber-300 dark:hover:border-amber-700"
-                    : "bg-indigo-50 dark:bg-indigo-950/30 border-indigo-200 dark:border-indigo-800 hover:border-indigo-300 dark:hover:border-indigo-700"
-                }`}
+                className={`relative p-8 rounded-3xl border bg-neutral-900/50 backdrop-blur-sm hover:-translate-y-1 transition-all duration-300 ${category.border}`}
               >
-                <CardHeader>
-                  <Badge
-                    variant="secondary"
-                    className={`w-fit ${
-                      category.color === "amber"
-                        ? "bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300"
-                        : "bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300"
-                    }`}
-                  >
-                    {category.level}
-                  </Badge>
-                  <CardTitle className="text-gray-900 dark:text-white">
-                    {category.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <CardDescription className="text-gray-600 dark:text-gray-300">
-                    {category.description}
-                  </CardDescription>
-                  <div
-                    className={`font-semibold ${
-                      category.color === "amber"
-                        ? "text-amber-600 dark:text-amber-400"
-                        : "text-indigo-600 dark:text-indigo-400"
-                    }`}
-                  >
-                    {category.count}
-                  </div>
-                </CardContent>
-              </Card>
+                <div
+                  className={`inline-flex px-3 py-1 rounded-full text-xs font-bold mb-6 ${category.bg} ${category.color}`}
+                >
+                  {category.level}
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-3">
+                  {category.title}
+                </h3>
+                <p className="text-neutral-400 mb-8 h-12">
+                  {category.description}
+                </p>
+                <div
+                  className={`flex items-center gap-2 font-mono text-sm ${category.color}`}
+                >
+                  <Code2 size={16} />
+                  {category.count}
+                </div>
+              </div>
             ))}
+          </div>
+
+          <div className="mt-8 text-center md:hidden">
+            <Link href="/problems">
+              <Button variant="ghost" className="text-amber-500">
+                View all problems
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-amber-600 to-amber-300  dark:from-amber-600 dark:to-indigo-600 rounded-md">
-        <div className="max-w-4xl mx-auto text-center px-4">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Ready to start your coding journey?
+      {/* --- CTA Section --- */}
+      <section className="relative z-10 py-32 px-6 text-center">
+        <div className="max-w-4xl mx-auto relative">
+          <div className="absolute inset-0 bg-amber-500/20 blur-[100px] rounded-full pointer-events-none" />
+
+          <h2 className="relative text-4xl md:text-6xl font-bold text-white mb-8 tracking-tight">
+            Ready to enter the <span className="text-amber-500">Arena?</span>
           </h2>
-          <p className="text-xl text-white/90 mb-8">
-            Join thousands of developers who are improving their skills every
-            day
+          <p className="relative text-xl text-neutral-300 mb-10 max-w-2xl mx-auto">
+            Join the platform where developers transform into engineers. Start
+            solving your first problem today.
           </p>
-          <Button
-            size="lg"
-            className="bg-white text-gray-900 hover:bg-gray-100 shadow-lg"
-          >
-            Get Started for Free
-          </Button>
+          <Link href="/problems">
+            <Button
+              size="lg"
+              className="relative h-14 px-10 text-lg font-bold bg-white text-neutral-950 hover:bg-neutral-200 rounded-xl shadow-xl transition-all hover:scale-105"
+            >
+              Start for Free
+            </Button>
+          </Link>
         </div>
       </section>
     </div>

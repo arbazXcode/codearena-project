@@ -67,7 +67,9 @@ const ProblemClient = ({ problem, submissionHistory }) => {
   const [output, setOutput] = useState("");
   const [isRunning, setIsRunning] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submissionHistory, setSubmissionHistory] = useState([]);
+  const [submissionHistoryState, setSubmissionHistoryState] = useState(
+    submissionHistory || [],
+  );
   const [executionResponse, setExecutionResponse] = useState(null);
   const { theme } = useTheme();
 
@@ -136,9 +138,9 @@ const ProblemClient = ({ problem, submissionHistory }) => {
       }
 
       if (res.submission.status === "Accepted") {
-        toast.success("✅ Accepted");
+        toast.success("Accepted");
       } else {
-        toast.error("❌ Wrong Answer");
+        toast.error("Wrong Answer");
       }
     } catch (error) {
       console.error(error);
@@ -269,7 +271,7 @@ const ProblemClient = ({ problem, submissionHistory }) => {
                   <TabsContent value="submissions" className="p-6">
                     <div className="text-center py-8 text-muted-foreground">
                       <p>Submission History</p>
-                      <SubmissionHistory submissions={submissionHistory} />
+                      <SubmissionHistory submissions={submissionHistoryState} />
                     </div>
                   </TabsContent>
                   <TabsContent value="editorial" className="p-6">
