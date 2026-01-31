@@ -9,34 +9,35 @@ import { revalidatePath } from "next/cache";
 export const getAllProblems = async () => {
   try {
     const user = await currentUser();
-    const data = await db.user.findUnique({
-      where: {
-        clerkId: user?.id,
-      },
-      select: {
-        id: true,
-      },
+    if (!user) {
+      return { success: false, error: "Unauthorized" };
+    }
+
+    const dbUser = await db.user.findUnique({
+      where: { clerkId: user.id },
+      select: { id: true },
     });
+
+    if (!dbUser) {
+      return { success: false, error: "User not onboarded" };
+    }
 
     const problems = await db.problem.findMany({
       include: {
-
         solvedBy: {
-          where: {
-            userId: data.id
-          }
-        }
+          where: { userId: dbUser.id },
+        },
       },
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy: { createdAt: "desc" },
     });
+
     return { success: true, data: problems };
   } catch (error) {
     console.error("Error fetching problems:", error);
     return { success: false, error: "Failed to fetch problems" };
   }
 };
+
 
 export const getProblemById = async (id) => {
   try {
@@ -119,13 +120,17 @@ export const editProblem = async (problemId, updatedData) => {
         title: updatedData.title,
         description: updatedData.description,
         difficulty: updatedData.difficulty,
-        constraints: updatedData.constraints,
+        tags: updatedData.tags,
         examples: updatedData.examples,
-        starterCode: updatedData.starterCode,
-        solutionCode: updatedData.solutionCode,
+        constraints: updatedData.constraints,
+        hints: updatedData.hints,
+        editorial: updatedData.editorial,
         testCases: updatedData.testCases,
+        codeSnippets: updatedData.codeSnippets,
+        referenceSolutions: updatedData.referenceSolutions,
       },
     });
+
 
     // Revalidate problems pages
     revalidatePath("/problems");

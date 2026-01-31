@@ -1,87 +1,102 @@
 "use server";
+
 import { db } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs/server";
 
+/**
+ * Runs once per user safely
+ */
 export const onBoardUser = async () => {
   try {
     const user = await currentUser();
-
-    if (!user) {
-      return { success: false, error: "No authenticated user found" };
-    }
+    if (!user) return null;
 
     const { id, firstName, lastName, imageUrl, emailAddresses } = user;
+    const email = emailAddresses?.[0]?.emailAddress;
 
-    const newUser = await db.user.upsert({
-      where: {
+    if (!email) {
+      throw new Error("No email found from Clerk");
+    }
+
+    // 1️⃣ Check by clerkId
+    const userByClerkId = await db.user.findUnique({
+      where: { clerkId: id },
+    });
+
+    if (userByClerkId) {
+      return { success: true };
+    }
+
+    // 2️⃣ Check by email
+    const userByEmail = await db.user.findUnique({
+      where: { email },
+    });
+
+    // 3️⃣ Email exists → attach clerkId
+    if (userByEmail) {
+      await db.user.update({
+        where: { email },
+        data: {
+          clerkId: id,
+          firstName: firstName || null,
+          lastName: lastName || null,
+          imageUrl: imageUrl || null,
+        },
+      });
+
+      return { success: true };
+    }
+
+    // 4️⃣ Create brand-new user
+    await db.user.create({
+      data: {
         clerkId: id,
-      },
-      update: {
+        email,
         firstName: firstName || null,
         lastName: lastName || null,
         imageUrl: imageUrl || null,
-        email: emailAddresses[0]?.emailAddress || "",
-      },
-      create: {
-        clerkId: id,
-        firstName: firstName || null,
-        lastName: lastName || null,
-        imageUrl: imageUrl || null,
-        email: emailAddresses[0]?.emailAddress || "",
+        role: "USER",
       },
     });
 
-    return {
-      success: true,
-      user: newUser,
-      message: "User onBoarded Successfully"
-    }
+    return { success: true };
   } catch (error) {
-    console.error("Error onboarding user:", error);
-    return {
-      success: false,
-      error: "Failed to onboard user"
-    };
+    console.error("onBoardUser error:", error);
+    return { success: false };
   }
 };
 
+/**
+ * Get current user's role
+ */
 export const currentUserRole = async () => {
   const user = await currentUser();
-
-  if (!user) {
-    return null;
-  }
-
-  const userRole = await db.user.findUnique({
-    where: {
-      clerkId: user.id,
-    },
-    select: {
-      role: true,
-    },
-  });
-
-  return userRole?.role ?? null;
-};
-
-
-export const getCurrentUser = async () => {
-  const user = await currentUser();
-
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
 
   const dbUser = await db.user.findUnique({
-    where: {
-      clerkId: user.id,
-    },
-    select: {
-      id: true,
-      role: true,
-    },
+    where: { clerkId: user.id },
+    select: { role: true },
   });
 
-  return dbUser;
+  return dbUser?.role ?? null;
 };
+
+/**
+ * Get current DB user (id + role)
+ */
+export const getCurrentUser = async () => {
+  const user = await currentUser();
+  if (!user) return null;
+
+  return await db.user.findUnique({
+    where: { clerkId: user.id },
+    select: { id: true, role: true },
+  });
+};
+
+
+
+
+
+
 
