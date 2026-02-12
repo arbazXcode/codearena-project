@@ -1,5 +1,4 @@
 import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 import {
   getProblemById,
   getAllSubmissionByCurrentUserForProblem,
@@ -7,20 +6,31 @@ import {
 import ProblemClient from "./ProblemClient";
 
 export default async function ProblemPage({ params }) {
+  // ✅ unwrap params (IMPORTANT)
+  const { id } = await params;
+
+  // 1️⃣ Fetch problem (PUBLIC)
+  const problemRes = await getProblemById(id);
+  if (!problemRes.success || !problemRes.data) {
+    return <div className="p-6">Problem not found</div>;
+  }
+
+  // 2️⃣ Auth OPTIONAL
   const { userId } = auth();
-  if (!userId) redirect("/sign-in");
+  let submissionHistory = [];
 
-  const problemRes = await getProblemById(params.id);
-  if (!problemRes.success) redirect("/");
+  if (userId) {
+    const submissionsRes = await getAllSubmissionByCurrentUserForProblem(id);
 
-  const submissionsRes = await getAllSubmissionByCurrentUserForProblem(
-    params.id,
-  );
+    if (submissionsRes.success) {
+      submissionHistory = submissionsRes.data;
+    }
+  }
 
   return (
     <ProblemClient
       problem={problemRes.data}
-      submissionHistory={submissionsRes.success ? submissionsRes.data : []}
+      submissionHistory={submissionHistory}
     />
   );
 }
