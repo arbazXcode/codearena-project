@@ -34,7 +34,10 @@ import { ModeToggle } from "@/components/ui/mode-toggle";
 import { getJudge0LanguageId } from "@/lib/judge0";
 import { toast } from "sonner";
 import Link from "next/link";
-// import { executeCode, getAllSubmissionByCurrentUserForProblem } from "@/modules/problems/actions"; // Keep your imports
+import {
+  executeCode,
+  getAllSubmissionByCurrentUserForProblem,
+} from "@/modules/problems/actions"; // Keep your imports
 import { SubmissionDetails } from "@/modules/problems/components/submission-details";
 import { TestCaseTable } from "@/modules/problems/components/test-case-table";
 import { SubmissionHistory } from "@/modules/problems/components/submission-history";
