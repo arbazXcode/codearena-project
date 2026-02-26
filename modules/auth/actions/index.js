@@ -3,13 +3,15 @@
 import { db } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs/server";
 
-/**
- * Runs once per user safely
- */
+
+// Runs once per user safely
+
 export const onBoardUser = async () => {
   try {
     const user = await currentUser();
-    if (!user) return null;
+
+    if (!user)
+      return { success: false, error: "No Authenticated user found" };
 
     const { id, firstName, lastName, imageUrl, emailAddresses } = user;
     const email = emailAddresses?.[0]?.emailAddress;
@@ -18,7 +20,7 @@ export const onBoardUser = async () => {
       throw new Error("No email found from Clerk");
     }
 
-    // 1️⃣ Check by clerkId
+    // Check by clerkId
     const userByClerkId = await db.user.findUnique({
       where: { clerkId: id },
     });
@@ -27,12 +29,12 @@ export const onBoardUser = async () => {
       return { success: true };
     }
 
-    // 2️⃣ Check by email
+    // Check by email
     const userByEmail = await db.user.findUnique({
       where: { email },
     });
 
-    // 3️⃣ Email exists → attach clerkId
+    // Email exists → attach clerkId
     if (userByEmail) {
       await db.user.update({
         where: { email },
@@ -66,9 +68,9 @@ export const onBoardUser = async () => {
   }
 };
 
-/**
- * Get current user's role
- */
+
+// Get current user's role
+
 export const currentUserRole = async () => {
   const user = await currentUser();
   if (!user) return null;
@@ -81,9 +83,9 @@ export const currentUserRole = async () => {
   return dbUser?.role ?? null;
 };
 
-/**
- * Get current DB user (id + role)
- */
+
+// Get current DB user (id + role)
+
 export const getCurrentUser = async () => {
   const user = await currentUser();
   if (!user) return null;

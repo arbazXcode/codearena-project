@@ -1,9 +1,9 @@
 services:
   postgres:
     image: postgres:15
-    container_name: leetcode_build
+    container_name: codearena_build
     environment:
-      POSTGRES_DB: leetcode
+      POSTGRES_DB: codearena
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Mdarbaz77
     ports:
@@ -13,4 +13,4 @@ services:
     restart: unless-stopped
 
 volumes:
-  leetcode_db_data:
+  codearena_db_data:

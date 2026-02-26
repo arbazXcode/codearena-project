@@ -7,6 +7,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum SubmissionStatus {
+  PENDING
+  ACCEPTED
+  WRONG_ANSWER
+  RUNTIME_ERROR
+  COMPILATION_ERROR
+  TIME_LIMIT_EXCEEDED
+}
+
 model User {
   id             String          @id @default(uuid())
   email          String          @unique
@@ -59,7 +79,7 @@ model Submission {
   stdout        String?
   stderr        String?
   compileOutput String?
-  status        String
+  status        SubmissionStatus
   memory        String?
   time          String?
   createdAt     DateTime         @default(now())
@@ -79,7 +99,7 @@ model TestCaseResult {
   expected      String
   stderr        String?
   compileOutput String?
-  status        String
+status          SubmissionStatus
   memory        String?
   time          String?
   createdAt     DateTime   @default(now())
@@ -123,13 +143,4 @@ model ProblemInPlaylist {
   @@unique([playlistId, problemId])
 }
 
-enum UserRole {
-  ADMIN
-  USER
-}
 
-enum Difficulty {
-  EASY
-  MEDIUM
-  HARD
-}
